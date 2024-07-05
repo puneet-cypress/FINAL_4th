@@ -1,6 +1,7 @@
 // <reference types="cypress" />
 
 
+//import LoginPage from "../pages/loginpage.cy.js";
 import LoginPage from "../pages/loginpage.cy.js";
 
 describe('Login Test', () => {
@@ -17,17 +18,17 @@ beforeEach(() => {
     })
 
     it('Enter Username', () => {
-        loginpage.enterUsername();
-        loginpage.enterPassword();
+        loginpage.enterUsername("Admin");
+        loginpage.enterPassword("admin123");
         loginpage.clickLogin();
+        cy.url().should('include', '/web/index.php/dashboard/index');
     })
 
-    // it('Enter Password', () => {
-    //     loginpage.enterPassword();
-    // })
-
-    // it('Click Login', () => {
-    //     loginpage.clickLogin();
-    // })
-
+    it('Enter wrong email and password', () => {
+        loginpage.enterUsername("Admin123");
+        loginpage.enterPassword("wrongpassword");
+        loginpage.clickLogin();
+        cy.url().should('not.include' , '/web/index.php/dashboard/index');
+        loginpage.getErrorMessage("Invalid credentials");
+       })
 });
